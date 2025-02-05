@@ -33,6 +33,16 @@ jobs:
                  -H "Authorization: Bearer $discord_token" \
                  -d '{"discord_username": "'"$discord_username"'", "github_username": "'"$github_username"'"}' \
                  "$dm_url"
+            
+            # Close the issue using GitHub API
+            issue_number="${{ github.event.issue.number }}"
+            github_token="${{ secrets.GITHUB_TOKEN }}"
+
+            curl -X PATCH \
+                 -H "Authorization: Bearer $github_token" \
+                 -H "Content-Type: application/json" \
+                 -d '{"state": "closed"}' \
+                 "https://api.github.com/repos/${{ github.repository }}/issues/$issue_number"
           else
             echo "Issue title does not match the expected format."
           fi
