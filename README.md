@@ -12,11 +12,10 @@ Here are the types of cosmetics you can add:
 
 - **Backpacks**: Place your backpack files in the `cosmetics/backpacks/` folder.
 - **Hats**: Place your hat files in the `cosmetics/hats/` folder.
-- **Offhand Cosmetics**: Add offhand cosmetic files (e.g., items in the offhand slot) to `cosmetics/offhand/`.
 - **Capes**: Place cape files in the `cosmetics/capes/` folder.
 - **Balloons**: For balloon cosmetics, put the files in the `cosmetics/balloons/` folder.
 
-Ensure each cosmetic file is correctly formatted (e.g., textures as `.png`, models as `.json` or `.obj`, etc.).
+Ensure each cosmetic file is correctly formatted (e.g., textures as `.png`, models as `.json`.).
 
 ### 3. Update Configuration Files
 If you add a new cosmetic category or option, make sure to update the configuration files in the appropriate `config/` folder. Document any new parameters or variables you add.
