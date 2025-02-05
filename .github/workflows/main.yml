@@ -3,7 +3,7 @@ name: Validate JSON
 on:
   pull_request:
     paths:
-      - '**/*.json'
+      - './cosmetics/**/*.json'
 
 jobs:
   validate-json:
