@@ -1,22 +1,22 @@
-name: PR Commenter
+name: PR Comment Check
 
 on:
-  pull_request:
-    types:
-      - opened
+  issue_comment:
+    types: [created]
 
 jobs:
-  comment:
+  check_comment:
     runs-on: ubuntu-latest
     steps:
-      - name: Add comment to PR
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}   # Ensure this line is correct
-          script: |
-            github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.payload.pull_request.number,
-              body: "Danke für deine Pull Request! Wir werden sie so schnell wie möglich überprüfen."
-            });
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Check if comment starts with the specified username
+        run: |
+          COMMENT_BODY=$(jq --raw-output .comment.body "$GITHUB_EVENT_PATH")
+          if [[ "$COMMENT_BODY" == <username>* ]]; then
+            echo "Triggering REST API request because the comment starts with <username>"
+            curl -X POST https://example.com/api-endpoint -d '{"username": "<username>", "comment": "'"$COMMENT_BODY"'"}'
+          else
+            echo "No match for username in comment."
+          fi
