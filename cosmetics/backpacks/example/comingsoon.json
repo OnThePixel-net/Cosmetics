@@ -3,7 +3,7 @@
 	"parent": "block/block",
 	"textures": {
 		"particle": "#particle",
-		"log": "#log1"
+		"log": "#log"
 	},
 	"elements": [
 		{
