@@ -20,7 +20,7 @@ jobs:
 
       - name: Validate JSON files
         run: |
-          SCHEMA_PATH="./checks/block-model.schema.json"
+          SCHEMA_PATH="checks/validate-json-model.yml"
           for file in $(find . -name "*.json"); do
             echo "Validating $file"
             # Prüft, ob die JSON-Datei überhaupt syntaktisch korrekt ist
