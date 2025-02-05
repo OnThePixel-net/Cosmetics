@@ -23,11 +23,16 @@ jobs:
             discord_username="${BASH_REMATCH[1]}"
             github_username="${{ github.event.issue.user.login }}"
 
+            # Hole die Umgebungsvariablen
+            discord_token="${{ secrets.DISCORD_DM_SECRET }}"
+            dm_url="${{ secrets.DM_URL }}"
+
             # API-Aufruf senden
             curl -X POST \
                  -H "Content-Type: application/json" \
+                 -H "Authorization: Bearer $discord_token" \
                  -d '{"discord_username": "'"$discord_username"'", "github_username": "'"$github_username"'"}' \
-                 https://deine-api-endpoint.com/link-discord
+                 "$dm_url"
           else
             echo "Titel des Issues entspricht nicht dem erwarteten Format."
           fi
