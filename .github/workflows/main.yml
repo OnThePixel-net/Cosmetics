@@ -18,12 +18,13 @@ jobs:
           sudo apt-get install -y jq python3-pip
           pip3 install jsonschema
 
-      - name: Validate JSON file
+      - name: Validate JSON files
         run: |
-          SCHEMA_URL="https://raw.githubusercontent.com/OnThePixel-net/Cosmetics/refs/heads/main/checks/validate-json.yml"
+          SCHEMA_PATH="./checks/block-model.schema.json"
           for file in $(find . -name "*.json"); do
             echo "Validating $file"
+            # Prüft, ob die JSON-Datei überhaupt syntaktisch korrekt ist
             jq empty "$file" || exit 1
-            curl -sSL "$SCHEMA_URL" -o schema.json
-            python3 -m jsonschema -i "$file" schema.json || exit 1
+            # Validierung gegen das Schema
+            python3 -m jsonschema -i "$file" "$SCHEMA_PATH" || exit 1
           done
