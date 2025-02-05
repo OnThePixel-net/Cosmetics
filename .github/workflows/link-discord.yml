@@ -14,25 +14,25 @@ jobs:
       - name: Check if Issue has the label 'Link Discord'
         if: contains(github.event.issue.labels.*.name, 'Link Discord')
         run: |
-          # Extrahiere den Titel des Issues
+          # Extract the issue title
           issue_title="${{ github.event.issue.title }}"
           
-          # Überprüfen, ob der Titel mit 'username: ' beginnt
+          # Check if the title starts with 'username: '
           if [[ "$issue_title" =~ ^username:\ (.*) ]]; then
-            # Extrahiere Discord und GitHub Benutzernamen
+            # Extract Discord and GitHub usernames
             discord_username="${BASH_REMATCH[1]}"
             github_username="${{ github.event.issue.user.login }}"
 
-            # Hole die Umgebungsvariablen
+            # Retrieve environment variables
             discord_token="${{ secrets.DISCORD_DM_SECRET }}"
             dm_url="${{ secrets.DM_URL }}"
 
-            # API-Aufruf senden
+            # Make the API call
             curl -X POST \
                  -H "Content-Type: application/json" \
                  -H "Authorization: Bearer $discord_token" \
                  -d '{"discord_username": "'"$discord_username"'", "github_username": "'"$github_username"'"}' \
                  "$dm_url"
           else
-            echo "Titel des Issues entspricht nicht dem erwarteten Format."
+            echo "Issue title does not match the expected format."
           fi
