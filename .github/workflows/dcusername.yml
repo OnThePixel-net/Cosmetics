@@ -10,13 +10,21 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        
-      - name: Check if comment starts with the specified username
+
+      - name: Check if comment contains a username pattern and trigger API request
         run: |
           COMMENT_BODY=$(jq --raw-output .comment.body "$GITHUB_EVENT_PATH")
-          if [[ "$COMMENT_BODY" == <username>* ]]; then
-            echo "Triggering REST API request because the comment starts with <username>"
-            curl -X POST https://example.com/api-endpoint -d '{"username": "<username>", "comment": "'"$COMMENT_BODY"'"}'
+          echo "Comment body: $COMMENT_BODY"
+          
+          # Regex, um nach einem 'username: <name>' Muster zu suchen
+          if [[ "$COMMENT_BODY" =~ username:\ ([a-zA-Z0-9_]+) ]]; then
+            USERNAME="${BASH_REMATCH[1]}"
+            echo "Found username: $USERNAME"
+            
+            # Sende eine REST API-Anfrage
+            curl -X POST https://example.com/api-endpoint \
+            -H "Content-Type: application/json" \
+            -d '{"username": "'"$USERNAME"'"}'
           else
-            echo "No match for username in comment."
+            echo "No matching username found in the comment."
           fi
